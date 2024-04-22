@@ -1,0 +1,26 @@
+RewriteEngine On
+
+# Redirecionamento HTTP para HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Impedir que diretórios sejam listados
+Options -Indexes
+
+# Bloquear acesso a arquivos sensíveis
+<FilesMatch "\.(env|log|gitignore)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Bloquear acesso a diretórios sensíveis
+<DirectoryMatch "^/(vendor|storage|tests)">
+    Order allow,deny
+    Deny from all
+</DirectoryMatch>
+
+# Bloquear acesso ao arquivo .htaccess
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
